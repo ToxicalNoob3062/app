@@ -1,69 +1,109 @@
-import { createSignal } from "solid-js";
-import logo from "./assets/logo.svg";
-import { invoke } from "@tauri-apps/api/core";
-import { db } from "./drizzle/core";
 import "./App.css";
 
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle
+} from "@/components/ui/card";
+import "tailwindcss-animate";
+import { Button } from "@/components/ui/button";
+import { Switch, SwitchControl, SwitchThumb } from "@/components/ui/switch";
+import { For } from "solid-js";
+
+const notifications = [
+	{
+		title: "Your call has been confirmed.",
+		description: "1 hour ago",
+	},
+	{
+		title: "You have a new message!",
+		description: "1 hour ago",
+	},
+	{
+		title: "Your subscription is expiring soon!",
+		description: "2 hours ago",
+	},
+];
+
 function App() {
-  const [greetMsg, setGreetMsg] = createSignal("");
-  const [name, setName] = createSignal("");
-
-  console.log("Drizzle ORM initialized ");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name: name() }));
-  }
-
-  // get the students from the database
-async function getStudents() {
-  try {
-    // Fetch students using Drizzle's query builder
-    const students = await db.query.students.findMany();
-    console.log("Students:", students);
-  } catch (error) {
-    console.error("Error fetching students:", error);
-  }
-}
-
-
-  return (
-    <main class="container">
-      <h1>Welcome to Tauri + Solid</h1>
-
-      <div class="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://solidjs.com" target="_blank">
-          <img src={logo} class="logo solid" alt="Solid logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and Solid logos to learn more.</p>
-
-      <form
-        class="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="button" onClick={getStudents}>
-          Get Students
-        </button>
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg()}</p>
-    </main>
-  );
+	return (
+		<div data-kb-theme="dark" >
+			<Card class="w-[380px] m-8" data-kb-theme="dark">
+				<CardHeader>
+					<CardTitle>Notifications</CardTitle>
+					<CardDescription>You have 3 unread messages.</CardDescription>
+				</CardHeader>
+				<CardContent class="grid gap-4">
+					<div class=" flex items-center space-x-4 rounded-md border p-4">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-4 w-4"
+							viewBox="0 0 24 24"
+						>
+							<path
+								fill="none"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6M9 17v1a3 3 0 0 0 6 0v-1"
+							/>
+						</svg>
+						<div class="flex-1 space-y-1">
+							<p class="text-sm font-medium leading-none">Push Notifications</p>
+							<p class="text-sm text-muted-foreground">
+								Send notifications to device.
+							</p>
+						</div>
+						<Switch>
+							<SwitchControl>
+								<SwitchThumb />
+							</SwitchControl>
+						</Switch>
+					</div>
+					<div>
+						<For each={notifications}>
+							{(notification) => (
+								<div class="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+									<span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
+									<div class="space-y-1">
+										<p class="text-sm font-medium leading-none">
+											{notification.title}
+										</p>
+										<p class="text-sm text-muted-foreground">
+											{notification.description}
+										</p>
+									</div>
+								</div>
+							)}
+						</For>
+					</div>
+				</CardContent>
+				<CardFooter>
+					<Button class="w-full">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="mr-2 h-4 w-4"
+							viewBox="0 0 24 24"
+						>
+							<path
+								fill="none"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="m5 12l5 5L20 7"
+							/>
+						</svg>
+						Mark all as read
+					</Button>
+				</CardFooter>
+			</Card>
+		</div>
+	);
 }
 
 export default App;

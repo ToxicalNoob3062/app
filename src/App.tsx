@@ -1,11 +1,12 @@
 import "./App.css"
 
-import CardDemo from "@/components/card-demo";
+import SingInForm from "@/components/signIn";
 
 function App() {
+	console.log(window.innerWidth + " " + window.innerHeight);
 	return (
-		<div class="font-sans mx-auto mt-8 w-fit">
-			<CardDemo />
+		<div class="font-sans text-foreground flex items-center justify-center min-h-screen bg-[url('/leaves.webp')]">
+			<SingInForm />
 		</div>
 	);
 }

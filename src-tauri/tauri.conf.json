@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "app",
-        "width": 800,
-        "height": 600
+        "title": "purple",
+        "width": 1424,
+        "height": 937
       }
     ],
     "security": {

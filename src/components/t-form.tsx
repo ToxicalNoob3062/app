@@ -80,9 +80,9 @@ export default function TransactionForm() {
                 </TextFieldRoot>
                 <Select
             class="w-24 bg-background font-medium"
-            defaultValue={months[0]}
+            defaultValue={months[currentMonth]}
             options={months}
-            onChange={(val) => setSelectedMonth(val ?? months[0])}
+            onChange={(val) => setSelectedMonth(val?.toString() ?? "")}
             itemComponent={props => <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>}
           >
             <SelectTrigger>

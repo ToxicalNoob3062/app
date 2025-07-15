@@ -1,6 +1,6 @@
 import type { ColumnDef } from "@tanstack/solid-table";
 import { flexRender, createSolidTable, getCoreRowModel, getPaginationRowModel } from "@tanstack/solid-table";
-import { For, Show, splitProps, Accessor, createSignal, createEffect} from "solid-js";
+import { For, Show, splitProps, Accessor, createSignal, createEffect } from "solid-js";
 import {
     Table,
     TableBody,
@@ -9,15 +9,15 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
-import type { Transaction } from "./columns";
+import type { Student } from "./columns";
 import { Button } from "../ui/button";
 
 type Props = {
-    columns: ColumnDef<Transaction>[];
-    data: Accessor<Transaction[] | undefined>;
+    columns: ColumnDef<Student>[];
+    data: Accessor<Student[] | undefined>;
 };
 
-export const TDataTable = (props: Props) => {
+export const SDataTable = (props: Props) => {
     const [local] = splitProps(props, ["columns", "data"]);
     const [pagination, setPagination] = createSignal({
         pageIndex: 0,
@@ -74,15 +74,8 @@ export const TDataTable = (props: Props) => {
                     >
                         <For each={table.getRowModel().rows}>
                             {row => {
-                                const amount = row.original.amount;
-                                const rowClass =
-                                    amount > 0
-                                        ? "bg-green-50"
-                                        : amount < 0
-                                            ? "bg-red-50"
-                                            : "";
                                 return (
-                                    <TableRow class={rowClass} data-state={row.getIsSelected() && "selected"}>
+                                    <TableRow data-state={row.getIsSelected() && "selected"}>
                                         <For each={row.getVisibleCells()}>
                                             {cell => (
                                                 <TableCell>
@@ -98,7 +91,7 @@ export const TDataTable = (props: Props) => {
                 </TableBody>
             </Table>
             <div class="flex items-center justify-between space-x-2 py-2">
-                <p class="text-teal-300 text-2xl bg-background"><span class="font-medium">Profit ~ </span>550.00</p>
+                <p class="text-slate-400 text-2xl bg-background"><span class="font-medium">Total Students ~ </span>100</p>
                 <div class="flex items-center justify-center whitespace-nowrap text-sm font-medium bg-background p-3">
                     Page {table.getState().pagination.pageIndex + 1} of{" "}
                     {table.getPageCount()}

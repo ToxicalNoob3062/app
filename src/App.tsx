@@ -1,16 +1,12 @@
 import "./App.css"
+import { Route, Router } from "@solidjs/router";
+import SignInPage from "./routes/signIn";
+import Display from "./routes/display";
 
-import SingInForm from "@/components/signIn";
-
-function App() {
-	console.log(window.innerWidth + " " + window.innerHeight);
-	return (
-		<div class="font-sans text-foreground flex items-center justify-center min-h-screen bg-[url('/leaves.webp')]">
-			<SingInForm />
-		</div>
-	);
+export default function App() {
+  return (
+    <Router>
+      <Route path="/" component={Display} />
+    </Router>
+  );
 }
-
-
-
-export default App;

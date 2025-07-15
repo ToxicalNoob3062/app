@@ -1,0 +1,29 @@
+import {
+  NumberField,
+  NumberFieldDecrementTrigger,
+  NumberFieldGroup,
+  NumberFieldIncrementTrigger,
+  NumberFieldInput,
+} from "@/components/ui/number-field";
+import { createSignal } from "solid-js";
+
+const DecimalNumberField = (props: { placeholder?: string }) => {
+  const [value, setValue] = createSignal(45.56);
+
+  return (
+    <NumberField
+      rawValue={value()}
+      onRawValueChange={setValue}
+      minValue={0}
+      step={0.01}
+    >
+      <NumberFieldGroup>
+        <NumberFieldDecrementTrigger aria-label="Decrement" />
+        <NumberFieldInput placeholder={props.placeholder ?? "Enter a number"} />
+        <NumberFieldIncrementTrigger aria-label="Increment" />
+      </NumberFieldGroup>
+    </NumberField>
+  );
+};
+
+export default DecimalNumberField;

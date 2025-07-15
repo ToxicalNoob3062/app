@@ -10,7 +10,8 @@
     "serve": "vite preview",
     "tauri": "tauri",
     "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate"
+    "migrate": "drizzle-kit migrate",
+    "format": "prettier --write \"**/*.{ts,tsx}\""
   },
   "license": "MIT",
   "dependencies": {
@@ -33,6 +34,7 @@
     "better-sqlite3": "^12.2.0",
     "drizzle-kit": "^0.31.4",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "3",
     "typescript": "~5.6.2",
     "vite": "^6.0.3",

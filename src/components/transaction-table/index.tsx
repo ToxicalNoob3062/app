@@ -13,7 +13,7 @@ const getData = query(async (): Promise<Transaction[]> => {
       type: "admission",
       createdAt: Date.now(),
       madeFor: "S-146012",
-      for: "Sep, 2023"
+      for: "Sep, 2023",
     },
     {
       id: "T-16295412",
@@ -21,18 +21,18 @@ const getData = query(async (): Promise<Transaction[]> => {
       type: "exam-fee",
       createdAt: Date.now(),
       madeFor: "S-223486",
-      for: "Jun, 2018"
-    }
+      for: "Jun, 2018",
+    },
     // ...
   ];
   while (data.length < 100) {
-    data.push(data[Math.floor(Math.random() * data.length)] );
+    data.push(data[Math.floor(Math.random() * data.length)]);
   }
   return data;
-}, "data");
+}, "transactionsData");
 
 export const route: RouteDefinition = {
-  load: () => getData()
+  load: () => getData(),
 };
 
 const TransactionTable = () => {

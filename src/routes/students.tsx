@@ -21,7 +21,7 @@ export default function Students() {
             />
           </div>
           <SelectComp
-            options={["Nurani", "Maqtab", "Hifz"]}
+            options={["All","Nurani", "Maqtab", "Hifz"]}
             defaultValue={["Maqtab"]}
           />
           <FormDialog

@@ -1,14 +1,9 @@
 import StudentTable from "@/components/student-table";
 import { Button } from "@/components/ui/button";
 import { FormDialog } from "@/components/f-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Dialog } from "@/components/dialog";
+import StudentForm from "@/components/s-form";
+import SelectComp from "@/components/select";
 
 export default function Students() {
   return (
@@ -25,26 +20,15 @@ export default function Students() {
               onAction={() => console.log("Students deleted")}
             />
           </div>
-          <Select
-            class="w-32 bg-background font-medium"
-            defaultValue={"Hifz"}
-            options={["Maqtab", "Nurani", "Hifz"]}
-            itemComponent={(props) => (
-              <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
-            )}
-          >
-            <SelectTrigger>
-              <SelectValue<string>>
-                {(state) => state.selectedOption()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent />
-          </Select>
+          <SelectComp
+            options={["Nurani", "Maqtab", "Hifz"]}
+            defaultValue={["Maqtab"]}
+          />
           <FormDialog
             triggerText="Add Student"
             className="bg-teal-100 hover:bg-teal-200"
           >
-            <div>Student Form</div>
+            <StudentForm />
           </FormDialog>
         </div>
       </div>

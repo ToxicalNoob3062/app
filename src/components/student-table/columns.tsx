@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 export type Student = {
   id: string;
   name: string;
-  age: number;
+  dob: number;
   division: string;
   contact: string;
   createdAt: number;
@@ -52,7 +52,12 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     header: "Age",
-    accessorKey: "age",
+    accessorKey: "dob",
+    cell: (info) => {
+      const dob = info.getValue() as number;
+      const age = new Date().getFullYear() - new Date(dob).getFullYear();
+      return age.toString();
+    },
   },
   {
     header: "Division",

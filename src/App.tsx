@@ -1,4 +1,4 @@
-import "./App.css"
+import "./App.css";
 import { Route, Router } from "@solidjs/router";
 import Display from "./routes/display";
 

@@ -6,8 +6,12 @@ import {
   NumberFieldInput,
 } from "@/components/ui/number-field";
 import { createSignal } from "solid-js";
+import { className } from "solid-js/web";
 
-const DecimalNumberField = (props: { placeholder?: string }) => {
+const DecimalNumberField = (props: {
+  placeholder?: string;
+  className?: string;
+}) => {
   const [value, setValue] = createSignal(45.56);
 
   return (
@@ -16,6 +20,7 @@ const DecimalNumberField = (props: { placeholder?: string }) => {
       onRawValueChange={setValue}
       minValue={0}
       step={0.01}
+      class={props.className || "w-40 bg-background font-medium"}
     >
       <NumberFieldGroup>
         <NumberFieldDecrementTrigger aria-label="Decrement" />

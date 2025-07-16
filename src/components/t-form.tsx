@@ -8,15 +8,7 @@ import {
 } from "@/components/ui/card";
 import { TextArea } from "@/components/ui/textarea";
 import { TextField, TextFieldRoot } from "@/components/ui/textfield";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+import SelectComp from "./select";
 import DecimalNumberField from "./decimal-f";
 import { createSignal } from "solid-js";
 
@@ -33,8 +25,8 @@ export default function TransactionForm() {
   });
 
   // Selected month/year state
-  const [selectedMonth, setSelectedMonth] = createSignal<string>(months[0]);
-  const [selectedYear, setSelectedYear] = createSignal<number>(currentYear);
+  const [selectedMonth, _setSelectedMonth] = createSignal<string>(months[0]);
+  const [selectedYear, _setSelectedYear] = createSignal<number>(currentYear);
 
   // (Optional) Formatted date string, e.g. "Jun, 2025"
   const formattedDate = () => `${selectedMonth()}, ${selectedYear()}`;
@@ -46,79 +38,30 @@ export default function TransactionForm() {
         <CardTitle class="text-2xl">Transaction Form</CardTitle>
         <CardDescription>Fill in the details below</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent class="flex flex-col gap-4">
         <div class="flex gap-2">
-          <DecimalNumberField placeholder="Amount" />
-          <Select
-            options={["Expense", "Income"]}
-            defaultValue={["Expense"]}
-            itemComponent={(props) => (
-              <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
-            )}
-          >
-            <SelectTrigger>
-              <SelectValue<string>>
-                {(state) => state.selectedOption()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent />
-          </Select>
-          <Select
-            options={["Tuition", "Food", "Transport", "Other"]}
+          <DecimalNumberField placeholder="Amount" className="flex-1" />
+          <SelectComp
+            options={["Income", "Expense"]}
+            defaultValue={["Income"]}
+          />
+          <SelectComp
+            options={["Tuition", "Donation", "Other"]}
             defaultValue={["Tuition"]}
-            itemComponent={(props) => (
-              <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
-            )}
-          >
-            <SelectTrigger>
-              <SelectValue<string>>
-                {(state) => state.selectedOption()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent />
-          </Select>
+          />
         </div>
-        <div class="flex gap-2 mt-4">
-          <TextFieldRoot>
+        <div class="flex gap-2">
+          <TextFieldRoot class="flex-1">
             <TextField type="text" placeholder="madeFor" />
           </TextFieldRoot>
-          <Select
-            class="w-24 bg-background font-medium"
-            defaultValue={months[currentMonth]}
-            options={months}
-            onChange={(val) => setSelectedMonth(val?.toString() ?? "")}
-            itemComponent={(props) => (
-              <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
-            )}
-          >
-            <SelectTrigger>
-              <SelectValue<string>>
-                {(state) => state.selectedOption()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent />
-          </Select>
-
-          {/* Year Select */}
-          <Select
-            class="w-20 bg-background font-medium"
-            defaultValue={currentYear}
-            options={years}
-            onChange={(val) => setSelectedYear(Number(val))}
-            itemComponent={(props) => (
-              <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
-            )}
-          >
-            <SelectTrigger>
-              <SelectValue<number>>
-                {(state) => state.selectedOption()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent />
-          </Select>
+          <SelectComp options={months} defaultValue={[months[currentMonth]]} />
+          <SelectComp
+            options={years.map(String)}
+            defaultValue={[String(currentYear)]}
+          />
         </div>
-        <TextFieldRoot class="mt-4">
-          <TextArea placeholder="Transaction Description" class="h-40" />
+        <TextFieldRoot>
+          <TextArea placeholder="Transaction Description" class="h-28" />
         </TextFieldRoot>
       </CardContent>
       <CardFooter class="flex justify-center items-center">

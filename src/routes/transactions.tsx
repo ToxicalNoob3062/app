@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Dialog } from "@/components/dialog";
 import TransactionForm from "@/components/t-form";
+import SelectComp from "@/components/select";
 
 export default function Transactions() {
   return (
@@ -32,21 +33,10 @@ export default function Transactions() {
               onAction={() => console.log("Transactions deleted")}
             />
           </div>
-          <Select
-            class="w-32 bg-background font-medium"
-            defaultValue={"All"}
-            options={["All", "Exepense", "Income"]}
-            itemComponent={(props) => (
-              <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
-            )}
-          >
-            <SelectTrigger>
-              <SelectValue<string>>
-                {(state) => state.selectedOption()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent />
-          </Select>
+          <SelectComp
+            options={["All", "Expense", "Income"]}
+            defaultValue={["All"]}
+          />
           <FormDialog
             triggerText="Add Transaction"
             className="bg-teal-100 hover:bg-teal-200"

@@ -22,7 +22,7 @@ export default function Students() {
           </div>
           <SelectComp
             options={["All","Nurani", "Maqtab", "Hifz"]}
-            defaultValue={["Maqtab"]}
+            defaultValue={["All"]}
           />
           <FormDialog
             triggerText="Add Student"

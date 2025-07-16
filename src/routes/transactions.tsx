@@ -2,13 +2,6 @@ import TransactionTable from "@/components/transaction-table";
 import { Button } from "@/components/ui/button";
 import { TextField, TextFieldRoot } from "@/components/ui/textfield";
 import { FormDialog } from "@/components/f-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Dialog } from "@/components/dialog";
 import TransactionForm from "@/components/t-form";
 import SelectComp from "@/components/select";

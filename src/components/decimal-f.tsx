@@ -6,7 +6,6 @@ import {
   NumberFieldInput,
 } from "@/components/ui/number-field";
 import { createSignal } from "solid-js";
-import { className } from "solid-js/web";
 
 const DecimalNumberField = (props: {
   placeholder?: string;

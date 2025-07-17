@@ -8,21 +8,25 @@ import {
 } from "@/components/ui/card";
 import { TextField, TextFieldRoot } from "@/components/ui/textfield";
 import SelectComp from "./select";
+import updateStudentHandler from "@/handlers/updateStudent";
+import { revalidate } from "@solidjs/router";
+import { Student } from "./student-table/columns";
 
 export default function StudentEditForm(props: {
   studentId: string;
+  previous: Partial<Student>
   onOpenChange?: (open: boolean) => void;
 }) {
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
+        await updateStudentHandler(props.studentId, data);
+        await revalidate("studentsData");
         props.onOpenChange?.(false);
-        // Handle the edit logic here, e.g., send data to the server
-        console.log(`Edited Student Data: ${props.studentId}`, data);
       }}
     >
       <CardHeader>
@@ -41,12 +45,13 @@ export default function StudentEditForm(props: {
               maxLength={11}
               pattern="[0-9]{11}"
               inputMode="numeric"
+              value={props.previous.contact}
             />
           </TextFieldRoot>
           <SelectComp
             name="division"
             options={["Nurani", "Maqtab", "Hifz"]}
-            defaultValue={["Maqtab"]}
+            defaultValue={[props.previous.division || "Maqtab"]}
           />
         </div>
       </CardContent>

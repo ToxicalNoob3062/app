@@ -127,6 +127,10 @@ export const columns: ColumnDef<Student>[] = [
           >
             <StudentEditForm
               studentId={info.row.original.id}
+              previous={{
+                division: info.row.original.division,
+                contact: info.row.original.contact,
+              }}
               onOpenChange={setDialogOpen}
             />
           </FormDialog>

@@ -21,11 +21,11 @@ import {
 import { Index } from "solid-js";
 import { Portal } from "solid-js/web";
 
-const DPicker = () => {
+const DPicker = (props: { name: string; required?: boolean }) => {
   return (
     <DatePicker>
       <DatePickerControl>
-        <DatePickerInput />
+        <DatePickerInput required={props.required} name={props.name} />
         <DatePickerTrigger />
       </DatePickerControl>
       <Portal>

@@ -3,11 +3,11 @@ import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 
 export const students = sqliteTable("students", {
   id: text("id").primaryKey(),
-  name: text("name"),
-  dob: integer("dob"),
-  division: text("division"),
-  contact: text("contact"),
-  createdAt: integer("created_at"),
+  name: text("name").notNull(),
+  dob: integer("dob").notNull(),
+  division: text("division").notNull(),
+  contact: text("contact").notNull(),
+  createdAt: integer("created_at").notNull(),
 });
 
 export const categories = sqliteTable("categories", {

@@ -7,13 +7,15 @@ import {
 
 import { JSX } from "solid-js";
 
-export function FormDialog(props: {
+export default function FormDialog(props: {
   children: JSX.Element;
   triggerText: string;
   className?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) {
   return (
-    <AlertDialog modal>
+    <AlertDialog modal open={props.open} onOpenChange={props.onOpenChange}>
       <AlertDialogTrigger
         class={`py-2 px-4 rounded-lg text-sm font-medium ${props.className}`}
       >

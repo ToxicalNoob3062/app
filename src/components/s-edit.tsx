@@ -7,38 +7,29 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { TextField, TextFieldRoot } from "@/components/ui/textfield";
-
 import SelectComp from "./select";
-import DPicker from "./d-picker";
-import { addStudentHandler } from "@/handlers/addStudent";
-import { revalidate } from "@solidjs/router";
 
-export default function StudentForm(props: {
+export default function StudentEditForm(props: {
+  studentId: string;
   onOpenChange?: (open: boolean) => void;
 }) {
   return (
     <form
-      onSubmit={async (e) => {
+      onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        await addStudentHandler(data);
-        await revalidate("studentsData");
         props.onOpenChange?.(false);
+        // Handle the edit logic here, e.g., send data to the server
+        console.log(`Edited Student Data: ${props.studentId}`, data);
       }}
     >
       <CardHeader>
         <CardTitle class="text-2xl">Student Form</CardTitle>
-        <CardDescription>Create New Student</CardDescription>
+        <CardDescription>Edit Student Details</CardDescription>
       </CardHeader>
       <CardContent>
-        <div class="flex gap-2">
-          <TextFieldRoot class="flex-1">
-            <TextField name="name" type="text" placeholder="Name" required />
-          </TextFieldRoot>
-          <DPicker required name="dob" />
-        </div>
         <div class="flex gap-2 mt-4">
           <TextFieldRoot class="flex-1">
             <TextField
@@ -60,7 +51,7 @@ export default function StudentForm(props: {
         </div>
       </CardContent>
       <CardFooter class="flex justify-center items-center">
-        <Button type="submit">Create</Button>
+        <Button type="submit">Edit</Button>
       </CardFooter>
     </form>
   );

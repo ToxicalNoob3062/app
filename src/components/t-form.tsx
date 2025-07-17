@@ -42,10 +42,12 @@ export default function TransactionForm() {
         <div class="flex gap-2">
           <DecimalNumberField placeholder="Amount" className="flex-1" />
           <SelectComp
+            name="transactionType"
             options={["Income", "Expense"]}
             defaultValue={["Income"]}
           />
           <SelectComp
+            name="transactionCategory"
             options={["Tuition", "Donation", "Other"]}
             defaultValue={["Tuition"]}
           />
@@ -54,8 +56,13 @@ export default function TransactionForm() {
           <TextFieldRoot class="flex-1">
             <TextField type="text" placeholder="madeFor" />
           </TextFieldRoot>
-          <SelectComp options={months} defaultValue={[months[currentMonth]]} />
           <SelectComp
+            name="transactionMonth"
+            options={months}
+            defaultValue={[months[currentMonth]]}
+          />
+          <SelectComp
+            name="transactionYear"
             options={years.map(String)}
             defaultValue={[String(currentYear)]}
           />

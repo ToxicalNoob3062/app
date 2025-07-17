@@ -1,12 +1,16 @@
+import StudentEditForm from "../s-edit";
+import FormDialog from "../f-dialog";
 import type { ColumnDef } from "@tanstack/solid-table";
+import { Checkbox, CheckboxControl } from "../ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { createSignal } from "solid-js";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Checkbox, CheckboxControl } from "../ui/checkbox";
-import { Badge } from "@/components/ui/badge";
+
 
 export type Student = {
   id: string;
@@ -77,29 +81,57 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: "actions",
-    cell: () => (
-      <DropdownMenu placement="bottom-end">
-        <DropdownMenuTrigger class="flex items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="size-4"
-            viewBox="0 0 24 24"
+    cell: (info) => {
+      const [dialogOpen, setDialogOpen] = createSignal(false);
+      return (
+        <>
+          <DropdownMenu placement="bottom-end">
+            <DropdownMenuTrigger class="flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="size-4"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0"
+                />
+              </svg>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={() => {
+                  setDialogOpen(true);
+                }}
+              >
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  console.log("Message action for", info.row.original.id);
+                }}
+              >
+                Message
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <FormDialog
+            open={dialogOpen()}
+            onOpenChange={setDialogOpen}
+            triggerText="Edit"
+            className="w-fit hidden"
           >
-            <path
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0"
+            <StudentEditForm
+              studentId={info.row.original.id}
+              onOpenChange={setDialogOpen}
             />
-          </svg>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Message</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+          </FormDialog>
+        </>
+      );
+    },
   },
 ];

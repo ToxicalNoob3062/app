@@ -1,46 +1,20 @@
+import getStudentsHandler from "@/handlers/getStudents";
 import type { Student } from "./columns";
 import { columns } from "./columns";
 import { SDataTable } from "./data-table";
-import type { RouteDefinition } from "@solidjs/router";
 import { createAsync, query } from "@solidjs/router";
+import { Table } from "@tanstack/solid-table";
 
 const getData = query(async (): Promise<Student[]> => {
-  // Fetch data from your API here.
-  let data = [
-    {
-      id: "S-146012",
-      name: "John Doe",
-      dob: new Date("2005-05-15").getTime(),
-      division: "Maqtab",
-      contact: "123-456-7890",
-      createdAt: Date.now(),
-    },
-    {
-      id: "S-223486",
-      name: "Jane Smith",
-      dob: new Date("2006-08-22").getTime(),
-      division: "Hifz",
-      contact: "987-654-3210",
-      createdAt: Date.now(),
-    },
-    // ...
-  ];
-  while (data.length < 100) {
-    data.push(data[Math.floor(Math.random() * data.length)]);
-  }
-  return data;
+  const students = await getStudentsHandler();
+  return students;
 }, "studentsData");
 
-export const route: RouteDefinition = {
-  load: () => getData(),
-};
-
-const StudentTable = () => {
+const StudentTable = (props: { ref?: (table: Table<Student>) => void }) => {
   const data = createAsync(() => getData());
-
   return (
     <div class="w-full space-y-2.5">
-      <SDataTable columns={columns} data={data} />
+      <SDataTable columns={columns} data={data} ref={props.ref} />
     </div>
   );
 };

@@ -4,9 +4,11 @@ import {
   SelectContent,
   SelectTrigger,
   SelectValue,
+  SelectHiddenSelect,
 } from "@/components/ui/select";
 
 export default function SelectComp(props: {
+  name: string;
   options: string[];
   defaultValue?: string[];
   className?: string;
@@ -24,6 +26,11 @@ export default function SelectComp(props: {
         <SelectValue<string>>{(state) => state.selectedOption()}</SelectValue>
       </SelectTrigger>
       <SelectContent />
+      <SelectHiddenSelect name={props.name}>
+        {props.options.map((option) => (
+          <option value={option}>{option}</option>
+        ))}
+      </SelectHiddenSelect>
     </Select>
   );
 }

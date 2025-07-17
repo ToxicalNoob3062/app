@@ -1,7 +1,7 @@
 import TransactionTable from "@/components/transaction-table";
 import { Button } from "@/components/ui/button";
 import { TextField, TextFieldRoot } from "@/components/ui/textfield";
-import { FormDialog } from "@/components/f-dialog";
+import  FormDialog  from "@/components/f-dialog";
 import { Dialog } from "@/components/dialog";
 import TransactionForm from "@/components/t-form";
 import SelectComp from "@/components/select";
@@ -27,6 +27,7 @@ export default function Transactions() {
             />
           </div>
           <SelectComp
+            name="transactionFilter"
             options={["All", "Expense", "Income"]}
             defaultValue={["All"]}
           />

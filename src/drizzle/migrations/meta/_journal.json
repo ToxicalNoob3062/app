@@ -29,6 +29,13 @@
       "when": 1752638476876,
       "tag": "0003_early_shockwave",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1752766196105,
+      "tag": "0004_handy_joseph",
+      "breakpoints": true
     }
   ]
 }

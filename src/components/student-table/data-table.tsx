@@ -1,11 +1,17 @@
-import type { ColumnDef } from "@tanstack/solid-table";
+import type { ColumnDef, Table as TableType } from "@tanstack/solid-table";
 import {
   flexRender,
   createSolidTable,
   getCoreRowModel,
   getPaginationRowModel,
 } from "@tanstack/solid-table";
-import { For, Show, splitProps, Accessor, createSignal } from "solid-js";
+import {
+  For,
+  Show,
+  Accessor,
+  createSignal,
+  createEffect,
+} from "solid-js";
 import {
   Table,
   TableBody,
@@ -20,10 +26,10 @@ import { Button } from "../ui/button";
 type Props = {
   columns: ColumnDef<Student>[];
   data: Accessor<Student[] | undefined>;
+  ref?: (table: TableType<Student>) => void;
 };
 
 export const SDataTable = (props: Props) => {
-  const [local] = splitProps(props, ["columns", "data"]);
   const [pagination, setPagination] = createSignal({
     pageIndex: 0,
     pageSize: 20,
@@ -31,9 +37,9 @@ export const SDataTable = (props: Props) => {
 
   const table = createSolidTable({
     get data() {
-      return local.data() || [];
+      return props.data() || [];
     },
-    columns: local.columns,
+    columns: props.columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     state: {
@@ -42,6 +48,10 @@ export const SDataTable = (props: Props) => {
       },
     },
     onPaginationChange: setPagination,
+  });
+
+  createEffect(() => {
+    props.ref?.(table);
   });
 
   return (
@@ -75,7 +85,7 @@ export const SDataTable = (props: Props) => {
             fallback={
               <TableRow>
                 <TableCell
-                  colSpan={local.columns.length}
+                  colSpan={props.columns.length}
                   class="h-24 text-center"
                 >
                   No results.
@@ -106,7 +116,8 @@ export const SDataTable = (props: Props) => {
       </Table>
       <div class="flex items-center justify-between space-x-2 py-2">
         <p class="text-slate-400 text-2xl bg-background">
-          <span class="font-medium">Total Students ~ </span>100
+          <span class="font-medium">Total Students ~ </span>{" "}
+          {table.getRowModel().rows.length}
         </p>
         <div class="flex items-center justify-center whitespace-nowrap text-sm font-medium bg-background p-3">
           Page {table.getState().pagination.pageIndex + 1} of{" "}

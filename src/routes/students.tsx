@@ -19,7 +19,7 @@ export default function Students() {
         <Button variant="default">Broadcast</Button>
         <div class="flex items-center gap-3">
           {table()?.getSelectedRowModel().rows.length && (
-            <div class="bg-red-100 hover:bg-red-200 rounded-lg m-4">
+            <div class="bg-red-100 hover:bg-red-200 rounded-lg">
               <Dialog
                 title="Delete Students"
                 description="Are you sure you want to delete these selected students?"

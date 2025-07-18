@@ -1,4 +1,4 @@
-import StudentTable from "@/components/student-table";
+import StudentTable, { setDivision } from "@/components/student-table";
 import { Button } from "@/components/ui/button";
 import FormDialog  from "@/components/f-dialog";
 import { Dialog } from "@/components/dialog";
@@ -40,6 +40,9 @@ export default function Students() {
             name="divisionFilter"
             options={["All", "Nurani", "Maqtab", "Hifz"]}
             defaultValue={["All"]}
+            onChange={(value) => {
+              setDivision(value ?? "All");
+            }}
           />
           <FormDialog
             open={openForm()}

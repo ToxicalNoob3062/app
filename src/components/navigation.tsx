@@ -18,8 +18,14 @@ export default function NavBar(props: {
 }) {
   return (
     <div class="flex items-center justify-between px-6">
-      <Show when={props.route === Route.transactions} fallback={<div class="w-32"></div>}>
-        <FormDialog triggerText="Categories" className="border p-3 w-32 bg-yellow-100 hover:bg-yellow-200">
+      <Show
+        when={props.route === Route.transactions}
+        fallback={<div class="w-32"></div>}
+      >
+        <FormDialog
+          triggerText="Categories"
+          className="border p-3 w-32 bg-yellow-100 hover:bg-yellow-200"
+        >
           <CategoryForm />
         </FormDialog>
       </Show>

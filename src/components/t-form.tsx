@@ -11,6 +11,9 @@ import { TextField, TextFieldRoot } from "@/components/ui/textfield";
 import SelectComp from "./select";
 import DecimalNumberField from "./decimal-f";
 import { Transaction } from "./transaction-table/columns";
+import { createAsync } from "@solidjs/router";
+import { getCategoriesData } from "./c-form";
+import addTransaction from "@/handlers/addTransaction";
 
 export default function TransactionForm() {
   // Current year for dynamic year options
@@ -24,30 +27,41 @@ export default function TransactionForm() {
     return date.toLocaleDateString("en-US", { month: "short" });
   });
 
+  // categories
+  const categories = createAsync(() => getCategoriesData());
+
   return (
-    <form onSubmit={async (e) => {
-            e.preventDefault();
-            const form = e.target as HTMLFormElement;
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            let transaction : Transaction & { desc: string } = {
-              id: crypto.randomUUID(),
-              amount: parseFloat(data.amount as string) * (data["t-type"] === "Expense" ? -1 : 1),
-              type: data.type as string,
-              createdAt: Date.now(),
-              madeFor: data.madeFor as string,
-              for: `${data.transactionMonth}-${data.transactionYear}`,
-              desc: data.desc as string,
-            }
-            console.log(transaction);
-      }}>
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        let transaction: Partial<Transaction> & { desc: string } = {
+          amount:
+            parseFloat(data.amount as string) *
+            (data["t-type"] === "Expense" ? -1 : 1),
+          type: data.type as string,
+          madeFor: data.madeFor as string,
+          for: `${data.transactionMonth}-${data.transactionYear}`,
+          desc: data.desc as string,
+        };
+        console.log("Transaction Data:", transaction);
+        await addTransaction(transaction);
+      }}
+    >
       <CardHeader>
         <CardTitle class="text-2xl">Transaction Form</CardTitle>
         <CardDescription>Fill in the details below</CardDescription>
       </CardHeader>
       <CardContent class="flex flex-col gap-4">
         <div class="flex gap-2">
-          <DecimalNumberField name="amount" placeholder="Amount" className="flex-1" required />
+          <DecimalNumberField
+            name="amount"
+            placeholder="Amount"
+            className="flex-1"
+            required
+          />
           <SelectComp
             name="t-type"
             options={["Income", "Expense"]}
@@ -55,13 +69,21 @@ export default function TransactionForm() {
           />
           <SelectComp
             name="type"
-            options={["Tuition", "Donation", "Other"]}
-            defaultValue={["Tuition"]}
+            options={categories() || []}
+            placeholder="Category"
           />
         </div>
         <div class="flex gap-2">
           <TextFieldRoot class="flex-1">
-            <TextField name="madeFor" type="text" placeholder="madeFor" minLength={8} maxLength={8} pattern="^S-\d{6}$" required />
+            <TextField
+              name="madeFor"
+              type="text"
+              placeholder="madeFor"
+              minLength={8}
+              maxLength={8}
+              pattern="^S-\d{6}$"
+              required
+            />
           </TextFieldRoot>
           <SelectComp
             name="transactionMonth"
@@ -75,7 +97,12 @@ export default function TransactionForm() {
           />
         </div>
         <TextFieldRoot>
-          <TextArea name="desc" placeholder="Transaction Description" class="h-28" required/>
+          <TextArea
+            name="desc"
+            placeholder="Transaction Description"
+            class="h-28"
+            required
+          />
         </TextFieldRoot>
       </CardContent>
       <CardFooter class="flex justify-center items-center">

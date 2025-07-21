@@ -25,7 +25,11 @@ const DecimalNumberField = (props: {
     >
       <NumberFieldGroup>
         <NumberFieldDecrementTrigger aria-label="Decrement" />
-        <NumberFieldInput name={props.name || "decimal-field"} required={props.required}  placeholder={props.placeholder ?? "Enter a number"} />
+        <NumberFieldInput
+          name={props.name || "decimal-field"}
+          required={props.required}
+          placeholder={props.placeholder ?? "Enter a number"}
+        />
         <NumberFieldIncrementTrigger aria-label="Increment" />
       </NumberFieldGroup>
     </NumberField>

@@ -21,9 +21,11 @@ export const transactions = sqliteTable("transactions", {
     .notNull()
     .references(() => categories.name),
   createdAt: integer("created_at").notNull(),
-  madeFor: text("made_for").references(() => students.id).notNull(),
+  madeFor: text("made_for")
+    .references(() => students.id)
+    .notNull(),
   for: text("for").notNull(),
-  desc: text("desc").notNull()  ,
+  desc: text("desc").notNull(),
 });
 
 export const metadata = sqliteTable("metadata", {

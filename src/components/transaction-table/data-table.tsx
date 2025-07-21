@@ -1,11 +1,18 @@
-import type { ColumnDef } from "@tanstack/solid-table";
+import type { ColumnDef, Table as TableType } from "@tanstack/solid-table";
 import {
   flexRender,
   createSolidTable,
   getCoreRowModel,
   getPaginationRowModel,
 } from "@tanstack/solid-table";
-import { For, Show, splitProps, Accessor, createSignal } from "solid-js";
+import {
+  For,
+  Show,
+  splitProps,
+  Accessor,
+  createSignal,
+  createEffect,
+} from "solid-js";
 import {
   Table,
   TableBody,
@@ -20,6 +27,7 @@ import { Button } from "../ui/button";
 type Props = {
   columns: ColumnDef<Transaction>[];
   data: Accessor<Transaction[] | undefined>;
+  ref?: (table: TableType<Transaction>) => void;
 };
 
 export const TDataTable = (props: Props) => {
@@ -42,6 +50,10 @@ export const TDataTable = (props: Props) => {
       },
     },
     onPaginationChange: setPagination,
+  });
+
+  createEffect(() => {
+    props.ref?.(table);
   });
 
   return (

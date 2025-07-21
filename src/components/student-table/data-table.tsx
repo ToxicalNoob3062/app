@@ -5,13 +5,7 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
 } from "@tanstack/solid-table";
-import {
-  For,
-  Show,
-  Accessor,
-  createSignal,
-  createEffect,
-} from "solid-js";
+import { For, Show, Accessor, createSignal, createEffect } from "solid-js";
 import {
   Table,
   TableBody,

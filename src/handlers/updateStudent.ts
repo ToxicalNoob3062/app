@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 export default async function updateStudentHandler(
   id: string,
-  data: Partial<Student>
+  data: Partial<Student>,
 ): Promise<boolean> {
   try {
     await db.update(students).set(data).where(eq(students.id, id));

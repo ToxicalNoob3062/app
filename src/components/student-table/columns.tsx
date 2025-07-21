@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-
 export type Student = {
   id: string;
   name: string;

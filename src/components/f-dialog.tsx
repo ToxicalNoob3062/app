@@ -21,7 +21,10 @@ export default function FormDialog(props: {
       >
         {props.triggerText}
       </AlertDialogTrigger>
-      <AlertDialogContent onInteractOutside={(event) => event.preventDefault()} class="p-0">
+      <AlertDialogContent
+        onInteractOutside={(event) => event.preventDefault()}
+        class="p-0"
+      >
         {props.children}
         <AlertDialogClose class="absolute top-2 right-2 rounded-lg p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500">
           <svg

@@ -1,6 +1,6 @@
 import StudentTable, { setDivision } from "@/components/student-table";
 import { Button } from "@/components/ui/button";
-import FormDialog  from "@/components/f-dialog";
+import FormDialog from "@/components/f-dialog";
 import { Dialog } from "@/components/dialog";
 import StudentForm from "@/components/s-form";
 import SelectComp from "@/components/select";

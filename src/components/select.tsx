@@ -12,14 +12,16 @@ export default function SelectComp(props: {
   options: string[];
   defaultValue?: string[];
   className?: string;
-  onChange?: (value: string | null) => void
+  placeholder?: string;
+  onChange?: (value: string | null) => void;
 }) {
   return (
     <Select
       class={props.className || "w-32 bg-background font-medium"}
+      placeholder={props.placeholder}
       options={props.options}
       defaultValue={props.defaultValue}
-      onChange={props.onChange as ()=> void}
+      onChange={props.onChange as () => void}
       itemComponent={(props) => (
         <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
       )}
@@ -28,7 +30,10 @@ export default function SelectComp(props: {
         <SelectValue<string>>{(state) => state.selectedOption()}</SelectValue>
       </SelectTrigger>
       <SelectContent />
-      <SelectHiddenSelect name={props.name} value={props.defaultValue?.[0] || ""}>
+      <SelectHiddenSelect
+        name={props.name}
+        value={props.defaultValue?.[0] || ""}
+      >
         {props.options.map((option) => (
           <option value={option}>{option}</option>
         ))}

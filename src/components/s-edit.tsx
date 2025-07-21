@@ -14,7 +14,7 @@ import { Student } from "./student-table/columns";
 
 export default function StudentEditForm(props: {
   studentId: string;
-  previous: Partial<Student>
+  previous: Partial<Student>;
   onOpenChange?: (open: boolean) => void;
 }) {
   return (

@@ -34,7 +34,7 @@ export default function StudentEditForm(props: {
         <CardDescription>Edit Student Details</CardDescription>
       </CardHeader>
       <CardContent>
-        <div class="flex gap-2 mt-4">
+        <div class="flex gap-2">
           <TextFieldRoot class="flex-1">
             <TextField
               name="contact"

@@ -10,7 +10,7 @@ import { TextArea } from "@/components/ui/textarea";
 import { TextField, TextFieldRoot } from "@/components/ui/textfield";
 import SelectComp from "./select";
 import DecimalNumberField from "./decimal-f";
-import { createSignal } from "solid-js";
+import { Transaction } from "./transaction-table/columns";
 
 export default function TransactionForm() {
   // Current year for dynamic year options
@@ -24,37 +24,44 @@ export default function TransactionForm() {
     return date.toLocaleDateString("en-US", { month: "short" });
   });
 
-  // Selected month/year state
-  const [selectedMonth, _setSelectedMonth] = createSignal<string>(months[0]);
-  const [selectedYear, _setSelectedYear] = createSignal<number>(currentYear);
-
-  // (Optional) Formatted date string, e.g. "Jun, 2025"
-  const formattedDate = () => `${selectedMonth()}, ${selectedYear()}`;
-
-  console.log(formattedDate());
   return (
-    <>
+    <form onSubmit={async (e) => {
+            e.preventDefault();
+            const form = e.target as HTMLFormElement;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            let transaction : Transaction & { desc: string } = {
+              id: crypto.randomUUID(),
+              amount: parseFloat(data.amount as string) * (data["t-type"] === "Expense" ? -1 : 1),
+              type: data.type as string,
+              createdAt: Date.now(),
+              madeFor: data.madeFor as string,
+              for: `${data.transactionMonth}-${data.transactionYear}`,
+              desc: data.desc as string,
+            }
+            console.log(transaction);
+      }}>
       <CardHeader>
         <CardTitle class="text-2xl">Transaction Form</CardTitle>
         <CardDescription>Fill in the details below</CardDescription>
       </CardHeader>
       <CardContent class="flex flex-col gap-4">
         <div class="flex gap-2">
-          <DecimalNumberField placeholder="Amount" className="flex-1" />
+          <DecimalNumberField name="amount" placeholder="Amount" className="flex-1" required />
           <SelectComp
-            name="transactionType"
+            name="t-type"
             options={["Income", "Expense"]}
             defaultValue={["Income"]}
           />
           <SelectComp
-            name="transactionCategory"
+            name="type"
             options={["Tuition", "Donation", "Other"]}
             defaultValue={["Tuition"]}
           />
         </div>
         <div class="flex gap-2">
           <TextFieldRoot class="flex-1">
-            <TextField type="text" placeholder="madeFor" />
+            <TextField name="madeFor" type="text" placeholder="madeFor" minLength={8} maxLength={8} pattern="^S-\d{6}$" required />
           </TextFieldRoot>
           <SelectComp
             name="transactionMonth"
@@ -68,12 +75,12 @@ export default function TransactionForm() {
           />
         </div>
         <TextFieldRoot>
-          <TextArea placeholder="Transaction Description" class="h-28" />
+          <TextArea name="desc" placeholder="Transaction Description" class="h-28" required/>
         </TextFieldRoot>
       </CardContent>
       <CardFooter class="flex justify-center items-center">
         <Button type="submit">Submit</Button>
       </CardFooter>
-    </>
+    </form>
   );
 }

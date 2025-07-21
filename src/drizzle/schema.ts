@@ -12,19 +12,18 @@ export const students = sqliteTable("students", {
 
 export const categories = sqliteTable("categories", {
   name: text("name").primaryKey(),
-  description: text("description"),
 });
 
 export const transactions = sqliteTable("transactions", {
   id: text("id").primaryKey(),
-  amount: real("amount"),
+  amount: real("amount").notNull(),
   type: text("type")
     .notNull()
     .references(() => categories.name),
-  createdAt: integer("created_at"),
-  madeFor: text("made_for").references(() => students.id),
-  for: text("for"),
-  desc: text("desc"),
+  createdAt: integer("created_at").notNull(),
+  madeFor: text("made_for").references(() => students.id).notNull(),
+  for: text("for").notNull(),
+  desc: text("desc").notNull()  ,
 });
 
 export const metadata = sqliteTable("metadata", {

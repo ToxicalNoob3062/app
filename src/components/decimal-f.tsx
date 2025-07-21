@@ -10,6 +10,8 @@ import { createSignal } from "solid-js";
 const DecimalNumberField = (props: {
   placeholder?: string;
   className?: string;
+  name?: string;
+  required?: boolean;
 }) => {
   const [value, setValue] = createSignal(45.56);
 
@@ -23,7 +25,7 @@ const DecimalNumberField = (props: {
     >
       <NumberFieldGroup>
         <NumberFieldDecrementTrigger aria-label="Decrement" />
-        <NumberFieldInput placeholder={props.placeholder ?? "Enter a number"} />
+        <NumberFieldInput name={props.name || "decimal-field"} required={props.required}  placeholder={props.placeholder ?? "Enter a number"} />
         <NumberFieldIncrementTrigger aria-label="Increment" />
       </NumberFieldGroup>
     </NumberField>

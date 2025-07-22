@@ -4,7 +4,6 @@ import { columns } from "./columns";
 import { TDataTable } from "./data-table";
 import type { RouteDefinition } from "@solidjs/router";
 import { createAsync, query } from "@solidjs/router";
-import { Student } from "../student-table/columns";
 import { Table } from "@tanstack/solid-table";
 
 const getData = query(async (): Promise<Transaction[]> => {

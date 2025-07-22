@@ -7,6 +7,9 @@ import {
 } from "../ui/dropdown-menu";
 import { Checkbox, CheckboxControl } from "../ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import FormDialog from "../f-dialog";
+import { createSignal } from "solid-js";
+import TransactionEditForm from "../t-edit";
 
 export type Transaction = {
   id: string;
@@ -15,6 +18,7 @@ export type Transaction = {
   createdAt: number;
   madeFor: string;
   for: string;
+  desc: string;
 };
 
 export const columns: ColumnDef<Transaction>[] = [
@@ -73,29 +77,51 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     id: "actions",
-    cell: () => (
-      <DropdownMenu placement="bottom-end">
-        <DropdownMenuTrigger class="flex items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="size-4"
-            viewBox="0 0 24 24"
+    cell: (info) => {
+      const [dialogOpen, setDialogOpen] = createSignal(false);
+      return (
+        <>
+          <DropdownMenu placement="bottom-end">
+            <DropdownMenuTrigger class="flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="size-4"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0"
+                />
+              </svg>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={() => {
+                  setDialogOpen(true);
+                }}
+              >
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem>Receipt</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <FormDialog
+            open={dialogOpen()}
+            onOpenChange={setDialogOpen}
+            triggerText="Edit"
+            className="w-fit hidden"
           >
-            <path
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0"
+            <TransactionEditForm
+              transaction={info.row.original}
+              onOpenChange={setDialogOpen}
             />
-          </svg>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Receipt</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+          </FormDialog>
+        </>
+      );
+    },
   },
 ];

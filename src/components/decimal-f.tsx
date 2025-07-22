@@ -12,9 +12,9 @@ const DecimalNumberField = (props: {
   className?: string;
   name?: string;
   required?: boolean;
+  defaultValue?: number;
 }) => {
-  const [value, setValue] = createSignal(45.56);
-
+  const [value, setValue] = createSignal(props.defaultValue || 0);
   return (
     <NumberField
       rawValue={value()}

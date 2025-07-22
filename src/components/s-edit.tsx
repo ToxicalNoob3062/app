@@ -13,7 +13,6 @@ import { revalidate } from "@solidjs/router";
 import { Student } from "./student-table/columns";
 
 export default function StudentEditForm(props: {
-  studentId: string;
   previous: Partial<Student>;
   onOpenChange?: (open: boolean) => void;
 }) {
@@ -24,7 +23,7 @@ export default function StudentEditForm(props: {
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        await updateStudentHandler(props.studentId, data);
+        await updateStudentHandler(props.previous.id as string, data);
         await revalidate("studentsData");
         props.onOpenChange?.(false);
       }}

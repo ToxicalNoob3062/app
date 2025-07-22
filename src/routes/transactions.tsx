@@ -50,10 +50,12 @@ export default function Transactions() {
             defaultValue={["All"]}
           />
           <FormDialog
+            open={openForm()}
+            onOpenChange={setOpenForm}
             triggerText="Add Transaction"
             className="bg-teal-100 hover:bg-teal-200"
           >
-            <TransactionForm />
+            <TransactionForm onOpenChange={setOpenForm} />
           </FormDialog>
         </div>
       </div>

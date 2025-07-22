@@ -13,24 +13,21 @@ import DecimalNumberField from "./decimal-f";
 import { Transaction } from "./transaction-table/columns";
 import { createAsync } from "@solidjs/router";
 import { getCategoriesData } from "./c-form";
-import addTransaction from "@/handlers/addTransaction";
 
-export default function TransactionForm(props: {
+type Props = {
+  transaction?: Partial<Transaction>;
   onOpenChange?: (open: boolean) => void;
-}) {
-  // Current year for dynamic year options
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
-  const years = [currentYear, currentYear + 1];
+};
 
+export default function TransactionEditForm(props: Props) {
   // Month names (Jan, Feb, ..., Dec)
+  const currentYear = new Date().getFullYear();
+  const years = [currentYear, currentYear + 1];
+  const categories = createAsync(() => getCategoriesData());
   const months = Array.from({ length: 12 }, (_, i) => {
     const date = new Date(2000, i, 1);
     return date.toLocaleDateString("en-US", { month: "short" });
   });
-
-  // categories
-  const categories = createAsync(() => getCategoriesData());
 
   return (
     <form
@@ -40,6 +37,7 @@ export default function TransactionForm(props: {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         let transaction: Partial<Transaction> & { desc: string } = {
+          id: props.transaction?.id,
           amount:
             parseFloat(data.amount as string) *
             (data["t-type"] === "Expense" ? -1 : 1),
@@ -49,12 +47,11 @@ export default function TransactionForm(props: {
           desc: data.desc as string,
         };
         console.log("Transaction Data:", transaction);
-        await addTransaction(transaction);
       }}
     >
       <CardHeader>
         <CardTitle class="text-2xl">Transaction Form</CardTitle>
-        <CardDescription>Create New Transaction</CardDescription>
+        <CardDescription>Edit Transaction Details</CardDescription>
       </CardHeader>
       <CardContent class="flex flex-col gap-4">
         <div class="flex gap-2">
@@ -62,17 +59,21 @@ export default function TransactionForm(props: {
             name="amount"
             placeholder="Amount"
             className="flex-1"
+            defaultValue={props.transaction?.amount}
             required
           />
           <SelectComp
             name="t-type"
             options={["Income", "Expense"]}
-            defaultValue={["Income"]}
+            defaultValue={[
+              (props.transaction?.amount as number) >= 0 ? "Income" : "Expense",
+            ]}
           />
           <SelectComp
             name="type"
             options={categories() || []}
             placeholder="Category"
+            defaultValue={[props.transaction?.type || ""]}
           />
         </div>
         <div class="flex gap-2">
@@ -80,6 +81,7 @@ export default function TransactionForm(props: {
             <TextField
               name="madeFor"
               type="text"
+              value={props.transaction?.madeFor}
               placeholder="madeFor"
               minLength={8}
               maxLength={8}
@@ -90,25 +92,31 @@ export default function TransactionForm(props: {
           <SelectComp
             name="transactionMonth"
             options={months}
-            defaultValue={[months[currentMonth]]}
+            defaultValue={[
+              props.transaction?.for?.split("-")[0] ||
+                months[new Date().getMonth()],
+            ]}
           />
           <SelectComp
             name="transactionYear"
             options={years.map(String)}
-            defaultValue={[String(currentYear)]}
+            defaultValue={[
+              props.transaction?.for?.split("-")[1] || String(currentYear),
+            ]}
           />
         </div>
         <TextFieldRoot>
           <TextArea
             name="desc"
             placeholder="Transaction Description"
+            value={props.transaction?.desc}
             class="h-28"
             required
           />
         </TextFieldRoot>
       </CardContent>
       <CardFooter class="flex justify-center items-center">
-        <Button type="submit">Create</Button>
+        <Button type="submit">Edit</Button>
       </CardFooter>
     </form>
   );

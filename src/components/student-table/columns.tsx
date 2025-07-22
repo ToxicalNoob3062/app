@@ -125,8 +125,8 @@ export const columns: ColumnDef<Student>[] = [
             className="w-fit hidden"
           >
             <StudentEditForm
-              studentId={info.row.original.id}
               previous={{
+                id: info.row.original.id,
                 division: info.row.original.division,
                 contact: info.row.original.contact,
               }}

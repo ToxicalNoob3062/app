@@ -11,7 +11,7 @@ import { TextField, TextFieldRoot } from "@/components/ui/textfield";
 import SelectComp from "./select";
 import DecimalNumberField from "./decimal-f";
 import { Transaction } from "./transaction-table/columns";
-import { createAsync } from "@solidjs/router";
+import { createAsync, revalidate } from "@solidjs/router";
 import { getCategoriesData } from "./c-form";
 import addTransaction from "@/handlers/addTransaction";
 
@@ -48,8 +48,9 @@ export default function TransactionForm(props: {
           for: `${data.transactionMonth}-${data.transactionYear}`,
           desc: data.desc as string,
         };
-        console.log("Transaction Data:", transaction);
         await addTransaction(transaction);
+        await revalidate("transactionsData");
+        props.onOpenChange?.(false);
       }}
     >
       <CardHeader>

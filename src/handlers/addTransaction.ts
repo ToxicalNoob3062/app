@@ -30,7 +30,7 @@ async function generateTransactionId(timestamp: number): Promise<string> {
 }
 
 export default async function addTransactionHandler(
-  transaction: Partial<Transaction> & { desc: string },
+  transaction: Partial<Transaction>,
 ): Promise<boolean> {
   try {
     const now = Date.now();
@@ -42,7 +42,7 @@ export default async function addTransactionHandler(
       createdAt: now,
       madeFor: transaction.madeFor as string,
       for: transaction.for as string,
-      desc: transaction.desc,
+      desc: transaction.desc as string,
     };
     await db.insert(transactions).values(completeTransaction);
     return true;

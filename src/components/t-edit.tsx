@@ -11,8 +11,9 @@ import { TextField, TextFieldRoot } from "@/components/ui/textfield";
 import SelectComp from "./select";
 import DecimalNumberField from "./decimal-f";
 import { Transaction } from "./transaction-table/columns";
-import { createAsync } from "@solidjs/router";
+import { createAsync, revalidate } from "@solidjs/router";
 import { getCategoriesData } from "./c-form";
+import updateTransactionHandler from "@/handlers/updateTransaction";
 
 type Props = {
   transaction?: Partial<Transaction>;
@@ -46,7 +47,12 @@ export default function TransactionEditForm(props: Props) {
           for: `${data.transactionMonth}-${data.transactionYear}`,
           desc: data.desc as string,
         };
-        console.log("Transaction Data:", transaction);
+        await updateTransactionHandler(
+          props.transaction?.id as string,
+          transaction,
+        );
+        await revalidate("transactionsData");
+        props.onOpenChange?.(false);
       }}
     >
       <CardHeader>
@@ -59,7 +65,7 @@ export default function TransactionEditForm(props: Props) {
             name="amount"
             placeholder="Amount"
             className="flex-1"
-            defaultValue={props.transaction?.amount}
+            defaultValue={Math.abs(props.transaction?.amount ?? 0)}
             required
           />
           <SelectComp

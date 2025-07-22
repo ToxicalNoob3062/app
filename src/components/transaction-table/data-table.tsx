@@ -12,6 +12,7 @@ import {
   Accessor,
   createSignal,
   createEffect,
+  createComputed,
 } from "solid-js";
 import {
   Table,
@@ -51,6 +52,15 @@ export const TDataTable = (props: Props) => {
     },
     onPaginationChange: setPagination,
   });
+
+  // total profit calculation as a Solid reactive computed value
+  const totalProfit = () =>
+    table.getFilteredRowModel().rows.reduce(
+      (acc, row) => acc + (row.original.amount || 0),
+      0,
+    );
+
+  console.log("Total Profit:", totalProfit());
 
   createEffect(() => {
     props.ref?.(table);
@@ -123,8 +133,9 @@ export const TDataTable = (props: Props) => {
         </TableBody>
       </Table>
       <div class="flex items-center justify-between space-x-2 py-2">
-        <p class="text-teal-300 text-2xl bg-background">
-          <span class="font-medium">Profit ~ </span>550.00
+        <p class={`${totalProfit() >= 0 ? "text-teal-300" : "text-red-300"} text-2xl bg-background`}>
+          <span class="font-medium">{totalProfit() >= 0 ? "Profit" : "Loss"} ~ </span>
+          {Math.abs(totalProfit()).toFixed(2)}
         </p>
         <div class="flex items-center justify-center whitespace-nowrap text-sm font-medium bg-background p-3">
           Page {table.getState().pagination.pageIndex + 1} of{" "}

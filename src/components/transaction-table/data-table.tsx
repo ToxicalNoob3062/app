@@ -12,7 +12,6 @@ import {
   Accessor,
   createSignal,
   createEffect,
-  createComputed,
 } from "solid-js";
 import {
   Table,
@@ -58,8 +57,6 @@ export const TDataTable = (props: Props) => {
     table
       .getFilteredRowModel()
       .rows.reduce((acc, row) => acc + (row.original.amount || 0), 0);
-
-  console.log("Total Profit:", totalProfit());
 
   createEffect(() => {
     props.ref?.(table);

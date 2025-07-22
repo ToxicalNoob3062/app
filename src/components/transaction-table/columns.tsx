@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import FormDialog from "../f-dialog";
 import { createSignal } from "solid-js";
 import TransactionEditForm from "../t-edit";
+import Receipt from "../receipt";
+
 
 export type Transaction = {
   id: string;
@@ -79,6 +81,7 @@ export const columns: ColumnDef<Transaction>[] = [
     id: "actions",
     cell: (info) => {
       const [dialogOpen, setDialogOpen] = createSignal(false);
+      const [receiptOpen, setReceiptOpen] = createSignal(false);
       return (
         <>
           <DropdownMenu placement="bottom-end">
@@ -100,15 +103,22 @@ export const columns: ColumnDef<Transaction>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem
-                onClick={() => {
+                onSelect={() => { // This is correct, leave as onSelect
                   setDialogOpen(true);
                 }}
               >
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem>Receipt</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => { setReceiptOpen(true); }}> {/* <-- CHANGE THIS BACK TO onSelect */}
+                Receipt
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Receipt
+            open={receiptOpen()}
+            onOpenChange={setReceiptOpen}
+            receiptData={info.row.original}
+          />
           <FormDialog
             open={dialogOpen()}
             onOpenChange={setDialogOpen}

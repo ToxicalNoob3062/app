@@ -12,7 +12,6 @@ import { createSignal } from "solid-js";
 import TransactionEditForm from "../t-edit";
 import Receipt from "../receipt";
 
-
 export type Transaction = {
   id: string;
   amount: number;
@@ -103,13 +102,20 @@ export const columns: ColumnDef<Transaction>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem
-                onSelect={() => { // This is correct, leave as onSelect
+                onSelect={() => {
+                  // This is correct, leave as onSelect
                   setDialogOpen(true);
                 }}
               >
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => { setReceiptOpen(true); }}> {/* <-- CHANGE THIS BACK TO onSelect */}
+              <DropdownMenuItem
+                onSelect={() => {
+                  setReceiptOpen(true);
+                }}
+              >
+                {" "}
+                {/* <-- CHANGE THIS BACK TO onSelect */}
                 Receipt
               </DropdownMenuItem>
             </DropdownMenuContent>

@@ -40,7 +40,9 @@ async fn open_print_window<R: Runtime>(
         r#"document.addEventListener('DOMContentLoaded', () => {{
             document.body.innerHTML = `{}`;
             document.title = 'Print Receipt';
-            window.print();
+            setTimeout(() => {{
+                window.print();
+            }}, 2000);
         }});"#,
         escaped_html
     );

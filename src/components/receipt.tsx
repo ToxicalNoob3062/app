@@ -33,6 +33,24 @@ async function printReceipt() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @media print {
+            body {
+                width: 100%;
+                height: auto;
+                transform-origin: top center;
+                transform: scale(0.8) !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+                zoom: 1 !important;
+                background: transparent !important;
+            }
+            #receipt-container {
+                transform: none !important; /* Ensure inner container is not scaled twice */
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="relative w-[712px] h-auto">

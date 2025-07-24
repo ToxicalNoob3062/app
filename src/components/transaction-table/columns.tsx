@@ -10,7 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import FormDialog from "../f-dialog";
 import { createSignal } from "solid-js";
 import TransactionEditForm from "../t-edit";
-import Receipt from "../receipt";
+import { getData, printReceipt } from "../receipt";
+import { createAsync } from "@solidjs/router";
+import { Student } from "../student-table/columns";
 
 export type Transaction = {
   id: string;
@@ -80,7 +82,9 @@ export const columns: ColumnDef<Transaction>[] = [
     id: "actions",
     cell: (info) => {
       const [dialogOpen, setDialogOpen] = createSignal(false);
-      const [receiptOpen, setReceiptOpen] = createSignal(false);
+      const studentProfile = createAsync(() =>
+        getData(info.row.original.madeFor || ""),
+      );
       return (
         <>
           <DropdownMenu placement="bottom-end">
@@ -111,20 +115,18 @@ export const columns: ColumnDef<Transaction>[] = [
               </DropdownMenuItem>
               <DropdownMenuItem
                 onSelect={() => {
-                  setReceiptOpen(true);
+                  printReceipt(
+                    info.row.original,
+                    studentProfile() as Student,
+                  ).catch((error) => {
+                    console.error("Error printing receipt:", error);
+                  });
                 }}
               >
-                {" "}
-                {/* <-- CHANGE THIS BACK TO onSelect */}
                 Receipt
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Receipt
-            open={receiptOpen()}
-            onOpenChange={setReceiptOpen}
-            receiptData={info.row.original}
-          />
           <FormDialog
             open={dialogOpen()}
             onOpenChange={setDialogOpen}

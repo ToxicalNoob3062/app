@@ -40,9 +40,27 @@ async fn open_print_window<R: Runtime>(
         r#"document.addEventListener('DOMContentLoaded', () => {{
             document.body.innerHTML = `{}`;
             document.title = 'Print Receipt';
-            setTimeout(() => {{
-                window.print();
-            }}, 2000);
+            
+            // add print button to the body dyanamically
+            const printButton = document.createElement('button');
+            printButton.id = 'print-btn';
+            printButton.textContent = 'Print Receipt';
+            printButton.onclick = () => window.print();
+
+            // use raw styles instead of className
+            printButton.style.backgroundColor = '#1e293b'; // slate-800
+            printButton.style.color = '#ffffff'; // white
+            printButton.style.borderRadius = '0.375rem'; // rounded
+            printButton.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)'; // shadow
+            printButton.style.display = 'block';
+            printButton.style.margin = '0 auto';
+            printButton.style.cursor = 'pointer';
+            printButton.style.marginTop = '1.5rem'; // mt-6
+            printButton.style.width = 'fit-content'; // to center the button
+            printButton.style.padding = '0.5rem 1.5rem'; // px-6 py-2
+
+            // Append the button to the body
+            document.body.appendChild(printButton);
         }});"#,
         escaped_html
     );
@@ -50,7 +68,6 @@ async fn open_print_window<R: Runtime>(
     webview.eval(&js).map_err(|e| e.to_string())?;
     Ok(())
 }
-
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

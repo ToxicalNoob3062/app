@@ -72,10 +72,11 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     header: "Stamp",
     accessorKey: "createdAt",
-    cell: (info) => new Date(info.getValue() as number).toLocaleDateString(),
+    cell: (info) =>
+      new Date(info.getValue() as number).toLocaleDateString("en-GB"),
   },
   {
-    header: "Made For",
+    header: "MadeFor",
     accessorKey: "madeFor",
   },
   {

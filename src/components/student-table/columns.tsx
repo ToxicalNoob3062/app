@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-
 export type Student = {
   id: string;
   name: string;
@@ -81,7 +80,8 @@ export const columns: ColumnDef<Student>[] = [
   {
     header: "Stamp",
     accessorKey: "createdAt",
-    cell: (info) => new Date(info.getValue() as number).toLocaleDateString(),
+    cell: (info) =>
+      new Date(info.getValue() as number).toLocaleDateString("en-GB"),
   },
   {
     id: "actions",

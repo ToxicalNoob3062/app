@@ -1,5 +1,4 @@
 import TransactionTable from "@/components/transaction-table";
-import { Button } from "@/components/ui/button";
 import { TextField, TextFieldRoot } from "@/components/ui/textfield";
 import FormDialog from "@/components/f-dialog";
 import { Dialog } from "@/components/dialog";
@@ -10,6 +9,12 @@ import { Table } from "@tanstack/solid-table";
 import { Transaction } from "@/components/transaction-table/columns";
 import removeTransactionsHandler from "@/handlers/removeTransactions";
 import { revalidate } from "@solidjs/router";
+import { createStore } from "solid-js/store";
+
+export const [searchQuery, setSearchQuery] = createStore({
+  query: "",
+  type: "All",
+});
 
 export default function Transactions() {
   const [table, setTable] = createSignal<Table<Transaction>>();
@@ -19,9 +24,21 @@ export default function Transactions() {
       <div class="flex items-center justify-between m-4">
         <div class="flex items-center gap-3">
           <TextFieldRoot class="w-96 bg-background">
-            <TextField type="text" placeholder="Intelligent Search 🔍️" />
+            <TextField
+              type="text"
+              placeholder="Intelligent Search 🔍️"
+              value={searchQuery.query}
+              onKeyDown={(e) => {
+                if (e.key === " " || e.key === "Spacebar") {
+                  e.preventDefault();
+                }
+              }}
+              onInput={(e) => {
+                const value = e.currentTarget.value.replace(/\s/g, "");
+                setSearchQuery("query", value);
+              }}
+            />
           </TextFieldRoot>
-          <Button>Search</Button>
         </div>
         <div class="flex items-center gap-3">
           <div class="bg-red-100 hover:bg-red-200 rounded-lg">
@@ -48,6 +65,7 @@ export default function Transactions() {
             name="transactionFilter"
             options={["All", "Expense", "Income"]}
             defaultValue={["All"]}
+            onChange={(value) => setSearchQuery("type", value ?? "All")}
           />
           <FormDialog
             open={openForm()}

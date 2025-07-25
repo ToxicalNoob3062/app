@@ -41,7 +41,21 @@ export default function CategoryForm() {
       </CardHeader>
       <CardContent class="flex gap-4 items-center">
         <TextFieldRoot>
-          <TextField placeholder="Category Name" name="name" />
+          <TextField
+            onKeyDown={(e) => {
+              if (e.key === " " || e.key === "Spacebar") {
+                e.preventDefault();
+              }
+            }}
+            onInput={(e) => {
+              const value = e.currentTarget.value
+                .replace(/\s/g, "")
+                .toLowerCase();
+              return value;
+            }}
+            placeholder="Category Name"
+            name="name"
+          />
         </TextFieldRoot>
         <Button type="submit">Create Category</Button>
       </CardContent>

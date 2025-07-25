@@ -3,13 +3,14 @@ import FormDialog from "../f-dialog";
 import type { ColumnDef } from "@tanstack/solid-table";
 import { Checkbox, CheckboxControl } from "../ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+
 
 export type Student = {
   id: string;
@@ -20,11 +21,14 @@ export type Student = {
   createdAt: number;
 };
 
+import { isAdmin } from "@/components/auth";
+
 export const columns: ColumnDef<Student>[] = [
   {
     id: "select",
     header: ({ table }) => (
       <Checkbox
+        disabled={!isAdmin()}
         indeterminate={table.getIsSomePageRowsSelected()}
         checked={table.getIsAllPageRowsSelected()}
         onChange={(value) => table.toggleAllPageRowsSelected(!!value)}
@@ -35,6 +39,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ row }) => (
       <Checkbox
+        disabled={!isAdmin()}
         checked={row.getIsSelected()}
         onChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
@@ -102,13 +107,15 @@ export const columns: ColumnDef<Student>[] = [
               </svg>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem
-                onClick={() => {
-                  setDialogOpen(true);
-                }}
-              >
-                Edit
-              </DropdownMenuItem>
+              <Show when={isAdmin()}>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setDialogOpen(true);
+                  }}
+                >
+                  Edit
+                </DropdownMenuItem>
+              </Show>
               <DropdownMenuItem
                 onClick={() => {
                   console.log("Message action for", info.row.original.id);

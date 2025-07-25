@@ -21,7 +21,7 @@ export default function Transactions() {
           <TextFieldRoot class="w-96 bg-background">
             <TextField type="text" placeholder="Intelligent Search 🔍️" />
           </TextFieldRoot>
-          <Button variant="outline">Search</Button>
+          <Button>Search</Button>
         </div>
         <div class="flex items-center gap-3">
           <div class="bg-red-100 hover:bg-red-200 rounded-lg">

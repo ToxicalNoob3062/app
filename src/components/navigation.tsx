@@ -6,6 +6,7 @@ import {
 import { Setter, Show } from "solid-js";
 import FormDialog from "./f-dialog";
 import CategoryForm from "./c-form";
+import Auth from "./auth";
 
 export enum Route {
   transactions,
@@ -50,7 +51,7 @@ export default function NavBar(props: {
           </NavigationMenuItem>
         </NavigationMenu>
       </div>
-      <div></div>
+      <Auth />
     </div>
   );
 }

@@ -57,23 +57,19 @@ export async function getTransactionsHandler(searchQuery: {
     past30Days.setDate(today.getDate() - 30);
     query = `stamp:${past30Days.toLocaleDateString("en-GB")}:${today.toLocaleDateString("en-GB")};`;
   }
-
   // if not ended ; yet return default rows
   if (!isValidSearchQuery(query)) {
     return [];
   }
-
-  // get the filter 
+  // get the filter
   const pureQuery = query.slice(0, -1).trim();
   const parts = pureQuery.split(":");
   const filter = parts[0].trim().toLocaleLowerCase();
-
   // process the quries as per the filter
   switch (filter) {
     case "id":
       return await db.query.transactions.findMany({
-        where: (transactions, { eq }) =>
-          eq(transactions.id, parts[1].trim()),
+        where: (transactions, { eq }) => eq(transactions.id, parts[1].trim()),
       });
     case "type":
       return await db.query.transactions.findMany({
@@ -83,12 +79,12 @@ export async function getTransactionsHandler(searchQuery: {
             case "Expense":
               return and(
                 eq(transactions.type, transType),
-                lt(transactions.amount, 0)
+                lt(transactions.amount, 0),
               );
             case "Income":
               return and(
                 eq(transactions.type, transType),
-                gt(transactions.amount, 0)
+                gt(transactions.amount, 0),
               );
             default:
               return eq(transactions.type, transType);
@@ -104,12 +100,12 @@ export async function getTransactionsHandler(searchQuery: {
             case "Expense":
               return and(
                 eq(transactions.for, forValue),
-                lt(transactions.amount, 0)
+                lt(transactions.amount, 0),
               );
             case "Income":
               return and(
                 eq(transactions.for, forValue),
-                gt(transactions.amount, 0)
+                gt(transactions.amount, 0),
               );
             default:
               return eq(transactions.for, forValue);
@@ -119,17 +115,22 @@ export async function getTransactionsHandler(searchQuery: {
       });
     case "madefor":
       return await db.query.transactions.findMany({
-        where: (transactions, { eq }) => eq(transactions.madeFor, parts[1].trim()),
+        where: (transactions, { eq }) =>
+          eq(transactions.madeFor, parts[1].trim()),
         orderBy: (transactions, { desc }) => desc(transactions.createdAt),
       });
-    default: {  // stamp filter
+    default: {
+      // stamp filter
       const date1 = parseDateDDMMYYYY(parts[1]) as Date;
       let date2 = parseDateDDMMYYYY(parts[2]) as Date;
       date2 = new Date(
         date2.getFullYear(),
         date2.getMonth(),
         date2.getDate(),
-        23, 59, 59, 999
+        23,
+        59,
+        59,
+        999,
       );
       if (!date1 || !date2) return [];
       return await db.query.transactions.findMany({
@@ -139,18 +140,18 @@ export async function getTransactionsHandler(searchQuery: {
               return and(
                 gte(transactions.createdAt, date1.getTime()),
                 lte(transactions.createdAt, date2.getTime()),
-                lt(transactions.amount, 0)
+                lt(transactions.amount, 0),
               );
             case "Income":
               return and(
                 gte(transactions.createdAt, date1.getTime()),
                 lte(transactions.createdAt, date2.getTime()),
-                gt(transactions.amount, 0)
+                gt(transactions.amount, 0),
               );
             default:
               return and(
                 gte(transactions.createdAt, date1.getTime()),
-                lte(transactions.createdAt, date2.getTime())
+                lte(transactions.createdAt, date2.getTime()),
               );
           }
         },

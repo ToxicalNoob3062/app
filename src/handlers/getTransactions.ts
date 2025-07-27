@@ -34,6 +34,7 @@ function isValidSearchQuery(query: string): boolean {
   if (parts.length < 2 || parts.length > 3) return false;
   const filter = parts[0].trim();
   if (!validfilters.has(filter)) return false;
+  if (filter === "madefor" && parts.length !== 3) return false;
   if (filter === "stamp") {
     if (parts.length !== 3) return false;
     const date1 = parseDateDDMMYYYY(parts[1]);
@@ -41,7 +42,7 @@ function isValidSearchQuery(query: string): boolean {
     if (!date1 || !date2) return false;
     if (date1 > date2) return false;
   }
-  if (filter !== "stamp" && parts.length !== 2) return false;
+  if (filter !== "stamp" && filter !== "madefor" && parts.length !== 2) return false;
   return true;
 }
 
@@ -53,12 +54,12 @@ export async function getTransactionsHandler(searchQuery: {
   let query = searchQuery.query.trim();
   if (!query) {
     const today = new Date();
-    const past30Days = new Date(today);
-    past30Days.setDate(today.getDate() - 30);
-    query = `stamp:${past30Days.toLocaleDateString("en-GB")}:${today.toLocaleDateString("en-GB")};`;
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    query = `stamp:${firstDayOfMonth.toLocaleDateString("en-GB")}:${today.toLocaleDateString("en-GB")};`;
   }
   // if not ended ; yet return default rows
   if (!isValidSearchQuery(query)) {
+    console.warn("Invalid search query:", query);
     return [];
   }
   // get the filter
@@ -113,12 +114,19 @@ export async function getTransactionsHandler(searchQuery: {
         },
         orderBy: (transactions, { desc }) => desc(transactions.createdAt),
       });
-    case "madefor":
+    case "madefor": {
+      const madeForValue = parts[1].trim();
+      const year = parts[2].trim();
+      console.log("Made for value:", madeForValue, "Year:", year);
       return await db.query.transactions.findMany({
-        where: (transactions, { eq }) =>
-          eq(transactions.madeFor, parts[1].trim()),
+        where: (transactions, { eq, like, and }) =>
+          and(
+            eq(transactions.madeFor, madeForValue),
+            like(transactions.for, `%-${year}`)
+          ),
         orderBy: (transactions, { desc }) => desc(transactions.createdAt),
       });
+    }
     default: {
       // stamp filter
       const date1 = parseDateDDMMYYYY(parts[1]) as Date;

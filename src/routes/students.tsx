@@ -14,7 +14,6 @@ import getUnpaidHandler from "@/handlers/getUnpaid";
 
 // unpaid signal
 export const [unpaidList, setUnpaidList] = createSignal<Set<string>>(new Set());
-
 export default function Students() {
   const [table, setTable] = createSignal<Table<Student>>();
   const [openForm, setOpenForm] = createSignal(false);
@@ -56,6 +55,8 @@ export default function Students() {
                   )
                 ) {
                   setUnpaidList(new Set(await getUnpaidHandler(value)));
+                } else {
+                  setUnpaidList(new Set<string>());
                 }
               }}
             />

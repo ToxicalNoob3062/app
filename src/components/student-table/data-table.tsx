@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/table";
 import type { Student } from "./columns";
 import { Button } from "../ui/button";
+import { unpaidList } from "@/routes/students";
 
 type Props = {
   columns: ColumnDef<Student>[];
@@ -90,7 +91,12 @@ export const SDataTable = (props: Props) => {
             <For each={table.getRowModel().rows}>
               {(row) => {
                 return (
-                  <TableRow data-state={row.getIsSelected() && "selected"}>
+                  <TableRow
+                    class={
+                      unpaidList().has(row.original.id) ? "bg-red-100" : ""
+                    }
+                    data-state={row.getIsSelected() && "selected"}
+                  >
                     <For each={row.getVisibleCells()}>
                       {(cell) => (
                         <TableCell>

@@ -9,6 +9,11 @@ import { Table } from "@tanstack/solid-table";
 import { Student } from "@/components/student-table/columns";
 import removeStudentsHandler from "@/handlers/removeStudents";
 import { revalidate } from "@solidjs/router";
+import { TextField, TextFieldRoot } from "@/components/ui/textfield";
+import getUnpaidHandler from "@/handlers/getUnpaid";
+
+// unpaid signal
+export const [unpaidList, setUnpaidList] = createSignal<Set<string>>(new Set());
 
 export default function Students() {
   const [table, setTable] = createSignal<Table<Student>>();
@@ -36,6 +41,25 @@ export default function Students() {
               />
             </div>
           )}
+          <TextFieldRoot class="w-32">
+            <TextField
+              name="for"
+              type="text"
+              placeholder="For"
+              minLength={8}
+              maxLength={8}
+              onInput={async (e) => {
+                const value = e.currentTarget.value;
+                if (
+                  /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\d{4}$/.test(
+                    value,
+                  )
+                ) {
+                  setUnpaidList(new Set(await getUnpaidHandler(value)));
+                }
+              }}
+            />
+          </TextFieldRoot>
           <SelectComp
             name="divisionFilter"
             options={["All", "Nurani", "Maqtab", "Hifz"]}

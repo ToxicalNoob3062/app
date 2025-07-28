@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { TextField, TextFieldRoot } from "@/components/ui/textfield";
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import { Badge } from "./ui/badge";
 
 import { addCategoryHandler } from "@/handlers/addCategory";
@@ -67,17 +67,19 @@ export default function CategoryForm() {
               class="bg-gray-100 hover:bg-gray-200 relative px-6 py-2"
             >
               {category}
-              <span
-                onClick={async () => {
-                  const success = await removeCategoryHandler(category);
-                  if (success) {
-                    revalidate("categoriesData");
-                  }
-                }}
-                class="absolute top-0 right-1 cursor-pointer text-xs"
-              >
-                x
-              </span>
+              <Show when={category !== "Tuition"}>
+                <span
+                  onClick={async () => {
+                    const success = await removeCategoryHandler(category);
+                    if (success) {
+                      revalidate("categoriesData");
+                    }
+                  }}
+                  class="absolute top-0 right-1 cursor-pointer text-xs"
+                >
+                  x
+                </span>
+              </Show>
             </Badge>
           )}
         </For>

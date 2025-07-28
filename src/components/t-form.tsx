@@ -74,6 +74,7 @@ export default function TransactionForm(props: {
             name="type"
             options={categories() || []}
             placeholder="Category"
+            defaultValue={["Tuition"]}
           />
         </div>
         <div class="flex gap-2">

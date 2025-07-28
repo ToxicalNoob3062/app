@@ -44,6 +44,16 @@ export const db = drizzle<typeof schema>(
   { schema: schema, logger: true },
 );
 
+// ensure defaults for the database
+// make a default category called tuition
+await db
+  .insert(schema.categories)
+  .values({ name: "Tuition" })
+  .onConflictDoUpdate({
+    target: schema.categories.name,
+    set: { name: "Tuition" }, // no real update, but required
+  });
+
 function isSelectQuery(sql: string): boolean {
   return /^\s*select\b/i.test(sql);
 }

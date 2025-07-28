@@ -7,6 +7,6 @@ export default defineConfig({
   dbCredentials: {
     url: "/home/rahat3062/.config/purple/test.db",
   },
-  verbose: true,
+  verbose: false,
   strict: true,
 });

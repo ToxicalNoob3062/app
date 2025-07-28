@@ -1,5 +1,5 @@
 import StudentTable, { setDivision } from "@/components/student-table";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import FormDialog from "@/components/f-dialog";
 import { Dialog } from "@/components/dialog";
 import StudentForm from "@/components/s-form";
@@ -20,7 +20,7 @@ export default function Students() {
   return (
     <div class="p-6">
       <div class="flex items-center justify-between mb-4">
-        <Button variant="default">Broadcast</Button>
+        {/* <Button variant="default">Broadcast</Button> */}
         <div class="flex items-center gap-3">
           {table()?.getSelectedRowModel().rows.length && (
             <div class="bg-red-100 hover:bg-red-200 rounded-lg">

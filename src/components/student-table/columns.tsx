@@ -116,13 +116,13 @@ export const columns: ColumnDef<Student>[] = [
                   Edit
                 </DropdownMenuItem>
               </Show>
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={() => {
                   console.log("Message action for", info.row.original.id);
                 }}
               >
                 Message
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
           <FormDialog

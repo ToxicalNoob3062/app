@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "app",
-  "version": "0.1.0",
-  "identifier": "purple",
+  "version": "0.1.1",
+  "identifier": "Purple",
   "build": {
     "beforeDevCommand": "bun run dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "purple",
+        "title": "Purple",
         "width": 1440,
         "height": 1080
       }

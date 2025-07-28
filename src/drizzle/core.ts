@@ -5,7 +5,7 @@ import * as schema from "./schema";
 let db_core: Database | null = null;
 export async function getDb() {
   if (!db_core) {
-    db_core = await Database.load("sqlite:test.db");
+    db_core = await Database.load("sqlite:purple.db");
   }
   return db_core;
 }

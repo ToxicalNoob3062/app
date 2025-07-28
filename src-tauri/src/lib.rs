@@ -1,6 +1,8 @@
 use serde::Deserialize;
 use tauri::WebviewUrl;
 use tauri::{WebviewWindowBuilder, Runtime};
+mod migrations;
+use migrations::get_migrations;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -12,7 +14,6 @@ fn greet(name: &str) -> String {
 pub struct PrintWindowArgs {
     html_content: String,
 }
-
 
 #[tauri::command]
 async fn open_print_window<R: Runtime>(
@@ -72,7 +73,7 @@ async fn open_print_window<R: Runtime>(
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_sql::Builder::new().build())
+        .plugin(tauri_plugin_sql::Builder::new().add_migrations("sqlite:test.db", get_migrations()).build())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![greet, open_print_window])
         .run(tauri::generate_context!())

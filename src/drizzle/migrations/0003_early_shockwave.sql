@@ -1,1 +1,0 @@
-ALTER TABLE `students` RENAME COLUMN "age" TO "dob";

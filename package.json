@@ -9,7 +9,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "tauri": "tauri",
-    "generate": "drizzle-kit generate",
+    "generate": "drizzle-kit generate && bun run ./migration-maker.ts",
     "migrate": "drizzle-kit migrate",
     "format": "prettier --write \"**/*.{ts,tsx}\""
   },

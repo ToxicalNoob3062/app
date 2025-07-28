@@ -2,6 +2,10 @@ import { drizzle } from "drizzle-orm/sqlite-proxy";
 import Database from "@tauri-apps/plugin-sql";
 import * as schema from "./schema";
 
+import { appConfigDir } from '@tauri-apps/api/path';
+
+(async()=> console.log("Database path:", await appConfigDir()))();
+
 let db_core: Database | null = null;
 export async function getDb() {
   if (!db_core) {

@@ -42,7 +42,8 @@ function isValidSearchQuery(query: string): boolean {
     if (!date1 || !date2) return false;
     if (date1 > date2) return false;
   }
-  if (filter !== "stamp" && filter !== "madefor" && parts.length !== 2) return false;
+  if (filter !== "stamp" && filter !== "madefor" && parts.length !== 2)
+    return false;
   return true;
 }
 
@@ -122,7 +123,7 @@ export async function getTransactionsHandler(searchQuery: {
         where: (transactions, { eq, like, and }) =>
           and(
             eq(transactions.madeFor, madeForValue),
-            like(transactions.for, `%-${year}`)
+            like(transactions.for, `%-${year}`),
           ),
         orderBy: (transactions, { desc }) => desc(transactions.createdAt),
       });
